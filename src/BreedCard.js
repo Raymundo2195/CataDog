@@ -23,7 +23,7 @@ function DogBreedCard(props) {
   // Only show first image of each breed as there can be a lot that will flood the page
   const shownImages = images.slice(0,1)
   return (
-    <div className="BreedCard-card red-border">
+    <div className="BreedCard-card">
       <a>{breed}</a>
       <div>
         {shownImages.map(imageUrl => (

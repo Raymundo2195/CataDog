@@ -4,7 +4,7 @@ import { useLocalStorage } from "./hooks"
 import "./App.css";
 
 function App() {
-  const [dogs, setDogs] = useLocalStorage("dogsList", [])
+  const [dogs, setDogs] = useLocalStorage("dogsList", {})
 
   useEffect(() => {
     fetch("https://dog.ceo/api/breeds/list/all")
@@ -13,26 +13,49 @@ function App() {
         const { message, status } = apiData
 
         if (status === "success") {
-          const primaryBreeds = Object.keys(message)
-          console.log(primaryBreeds)
-          setDogs(primaryBreeds)
+          console.log(message)
+          setDogs(message)
         } else {
-          setDogs([])
+          setDogs({})
         }
       })
   }, [])
   
+  const [filter, setFilter] = useState("")
+
+  let visibleBreeds = []
+  if (filter.length) {
+    const filteredBreeds = filter.split(",")
+    filteredBreeds.forEach(name => {
+      if (dogs.hasOwnProperty(name)) {
+        visibleBreeds.push(name)
+      }
+    })
+  } else {
+    visibleBreeds = Object.keys(dogs)
+  }
   return (
     <div className="App">
       <header className="App-header">
         <p>
           Welcome to CataDog, where you can browse your favorite dog breeds!
         </p>
+        <label>
+          Filter by breed:
+          <input
+            type="text"
+            value={filter}
+            onChange={e => setFilter(e.target.value)}
+          />
+        </label>
+        <br />
         <div className="App-breed-list">
           {
-            dogs.map(breed => (
-              <BreedCard breed={breed} />
-            ))
+            visibleBreeds.length ? 
+              visibleBreeds.map(breed => (
+                <BreedCard breed={breed} />
+              ))
+              : "No breeds were found matching your filter"
           }
         </div>
       </header>
