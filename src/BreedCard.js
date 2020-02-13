@@ -8,16 +8,18 @@ function DogBreedCard(props) {
   const [images, setImages] = useLocalStorage(`${breed}-images`, [])
   
   useEffect(() => {
-    fetch(`https://dog.ceo/api/breed/${breed}/images`)
-      .then(response => response.json())
-      .then(apiData => {
-        const { message, status } = apiData
-        if (status === "success") {
-          setImages(message)
-        } else {
-          setImages([])
-        }
-      })
+    if (images.length === 0) {
+      fetch(`https://dog.ceo/api/breed/${breed}/images`)
+        .then(response => response.json())
+        .then(apiData => {
+          const { message, status } = apiData
+          if (status === "success") {
+            setImages(message)
+          } else {
+            setImages([])
+          }
+        })
+    }
   }, breed)
 
   // Only show first image of each breed as there can be a lot that will flood the page

@@ -7,18 +7,20 @@ function App() {
   const [dogs, setDogs] = useLocalStorage("dogsList", {})
 
   useEffect(() => {
-    fetch("https://dog.ceo/api/breeds/list/all")
-      .then(response => response.json())
-      .then(apiData => {
-        const { message, status } = apiData
-
-        if (status === "success") {
-          console.log(message)
-          setDogs(message)
-        } else {
-          setDogs({})
-        }
-      })
+    if (Object.keys(dogs).length) {
+      fetch("https://dog.ceo/api/breeds/list/all")
+        .then(response => response.json())
+        .then(apiData => {
+          const { message, status } = apiData
+  
+          if (status === "success") {
+            console.log(message)
+            setDogs(message)
+          } else {
+            setDogs({})
+          }
+        })
+    }
   }, [])
   
   const [filter, setFilter] = useState("")
