@@ -1,23 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import BreedCard from "./BreedCard"
+import { useLocalStorage } from "./hooks"
+import "./App.css";
 
 function App() {
+  const [dogs, setDogs] = useLocalStorage("dogsList", [])
+
+  useEffect(() => {
+    fetch("https://dog.ceo/api/breeds/list/all")
+      .then(response => response.json())
+      .then(apiData => {
+        const { message, status } = apiData
+
+        if (status === "success") {
+          const primaryBreeds = Object.keys(message)
+          console.log(primaryBreeds)
+          setDogs(primaryBreeds)
+        } else {
+          setDogs([])
+        }
+      })
+  }, [])
+  
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          Welcome to CataDog, where you can browse your favorite dog breeds!
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <div className="App-breed-list">
+          {
+            dogs.map(breed => (
+              <BreedCard breed={breed} />
+            ))
+          }
+        </div>
       </header>
     </div>
   );
