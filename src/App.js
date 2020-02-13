@@ -29,8 +29,9 @@ function App() {
   if (filter.length) {
     const filteredBreeds = filter.split(",")
     filteredBreeds.forEach(name => {
-      if (dogs.hasOwnProperty(name)) {
-        visibleBreeds.push(name)
+      const trimmedName = name.trim()
+      if (dogs.hasOwnProperty(trimmedName)) {
+        visibleBreeds.push(trimmedName)
       }
     })
   } else {
