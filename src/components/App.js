@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import BreedCard from "./BreedCard"
-import { useLocalStorage } from "./hooks"
-import "./App.css";
+import { useLocalStorage } from "../hooks"
+import "./styles/App.css";
 
 function App() {
   const [dogs, setDogs] = useLocalStorage("dogsList", {})

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useLocalStorage } from "./hooks"
-import "./BreedCard.css"
+import { useLocalStorage } from "../hooks"
+import "./styles/BreedCard.css"
 
 function DogBreedCard(props) {
   const { breed } = props
