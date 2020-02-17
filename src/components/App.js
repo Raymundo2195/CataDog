@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import BreedList from "./BreedList"
 import { getFilteredKeys } from "../helpers/appHelpers.js"
 import { useLocalStorage } from "../hooks"
@@ -6,7 +6,6 @@ import "./styles/App.css";
 
 function App() {
   const [dogs, setDogs] = useLocalStorage("dogsList", {})
-
   useEffect(() => {
     if (Object.keys(dogs).length === 0) {
       fetch("https://dog.ceo/api/breeds/list/all")
@@ -21,8 +20,8 @@ function App() {
         })
     }
   }, [dogs, setDogs])
-  
-  const [filter, setFilter] = useState("")
+
+  const [filter, setFilter] = React.useState("")
   const cleanedFilters = filter.length
     ? filter.split(",").map(filterEntry => filterEntry.trim().toLowerCase())
     : []
@@ -38,6 +37,7 @@ function App() {
           Filter by breed:
           <input
             type="text"
+            placeholder="Enter breed(s) here"
             value={filter}
             onChange={e => setFilter(e.target.value)}
           />

@@ -1,21 +1,41 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import App from '../App';
 
-test('renders learn react link', () => {
-  const { getByText } = render(<App />);
-  const welcomeLine = getByText(/Welcome to CataDog, where you can browse your favorite dog breeds!/i);
-  expect(welcomeLine).toBeInTheDocument();
-});
+const defaultLocalStorage = {
+  retriever: []
+}
+const breedListUrl = "https://dog.ceo/api/breeds/list/all"
 
-test("doesn't make api calls if localstorage has cached values", () => {
-  // Mock local storage
-  // expect(fetch.get("dogs/list")).toHaveBeenCalled().toEqual(false)
-})
+describe("App", () => {
+  it("renders headline", () => {
+    const { getByText } = render(<App />);
+    const welcomeLine = getByText(/Welcome to CataDog, where you can browse your favorite dog breeds!/i);
+    expect(welcomeLine).toBeInTheDocument();
+  });
 
-test("filter correctly filters", () => {
-  // Mock local storage with something like { doberman: [], retriever: [] }
-  // Set filter value to "retriever"
-  // expect(<BreedCard breed="retriever" />).toBeInTheDocument()
-  // expect(<BreedCard breed="doberman" />).toNotBeInTheDocument()
+  it("doesn't make api calls if localstorage has cached values", () => {
+    global.localStorage.getItem.mockReturnValueOnce(JSON.stringify(defaultLocalStorage))
+    jest.spyOn(global, 'fetch')
+    render(<App />)
+    expect(global.fetch).not.toHaveBeenCalledWith(breedListUrl)
+  })
+
+  it("does call list api if no values are cached", () => {
+    global.localStorage.getItem.mockReturnValueOnce("{}")
+    jest.spyOn(global, 'fetch')
+    render(<App />)
+    expect(global.fetch).toHaveBeenCalledWith(breedListUrl)
+  })
+
+  it("updates filter state on input change", () => {
+    const setState = jest.fn();
+    const useStateSpy = jest.spyOn(React, 'useState')
+    useStateSpy.mockImplementation((init) => [init, setState]);
+
+    const { getByLabelText } = render(<App />)
+    const filterInput = getByLabelText(/Filter by breed:/)
+    fireEvent.change(filterInput, { target: { value: 'f' }})
+    expect(setState).toHaveBeenCalledWith('f')
+  })
 })
