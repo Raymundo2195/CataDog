@@ -8,8 +8,12 @@ This project uses yarn, to install and run it locally, you should just need to r
 
 To run tests, simply run `yarn test` in the root directory.
 
+# Folder Organization
+
+Files are separated out into two main folders, `components` for all React files, and `helpers` for generic Javascript functions that are used in the app. Each component has its own file, with a css file by the same name containing its necessary styles in the `styles` subdirectory. A `tests` subdirectory exists for each main directory to describe the tests related to the nearby files.
+
 # Future Improvements
 As this is a first iteration, I'll put together some future ideas for how the project could be improved with more time spent on it.
 
 * Better ways to view all images for an animal. Didn't show all available urls initially as it kind of flooded the page with images. Think that some sort of carousel that virtualizes the loading of the images would be really useful here to maintain size constraints on the page and performance.
-* I haven't built a web react app in a little while and I wasn't familiar with the testing framework included in CRA, so I included a couple descriptions of tests in the App.test.js file in pseudocode. Obviously these would be something to flesh out and make a reality.
+* ~~I haven't built a web react app in a little while and I wasn't familiar with the testing framework included in CRA, so I included a couple descriptions of tests in the App.test.js file in pseudocode. Obviously these would be something to flesh out and make a reality.~~
