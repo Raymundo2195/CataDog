@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useLocalStorage } from "../hooks"
 import "./styles/BreedCard.css"
 
@@ -20,16 +20,16 @@ function DogBreedCard(props) {
           }
         })
     }
-  }, breed)
+  }, [breed, images, setImages])
 
   // Only show first image of each breed as there can be a lot that will flood the page
   const shownImages = images.slice(0,1)
   return (
     <div className="BreedCard-card">
-      <a>{breed}</a>
+      <p>{breed}</p>
       <div>
-        {shownImages.map(imageUrl => (
-          <img src={imageUrl} />
+        {shownImages.map((imageUrl, index) => (
+          <img src={imageUrl} alt={`${breed}-${index}`}/>
         ))}
       </div>
     </div>
